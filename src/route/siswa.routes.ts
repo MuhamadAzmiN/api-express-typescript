@@ -13,6 +13,7 @@ class SiswaRoute {
        this.router.get('/all', this.controller.getAll)
        this.router.delete('/delete/:id', this.controller.delete)
        this.router.get('/detail/:id', this.controller.detailSiswa)
+       this.router.put('/update/:id', this.controller.updateSiswa)
     }
 }
 

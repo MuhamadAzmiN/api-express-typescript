@@ -8,6 +8,7 @@ interface ISiswaRepository {
     delete(id : string) : Promise<ISiswa>
     CheckSiswa(id : string) : Promise<ISiswa[]>
     detailSiswa(id : string) : Promise<ISiswa | undefined>
+    updateSiswa(id : string, siswa : ISiswa) : Promise<ISiswa>
 
 }
 
@@ -66,6 +67,20 @@ class SiswaRepository implements ISiswaRepository {
             throw e
         }
     } 
+
+    async updateSiswa(id: string, siswa: ISiswa): Promise<ISiswa> {
+        try {
+           return await prismaClient.siswa.update({
+               where : {
+                   id : id
+               },
+               data : siswa
+           })
+
+        }catch(e){
+            throw e
+        }
+    }
    
     
 }

@@ -80,12 +80,48 @@ export default  class SiswaController {
         res.status(400).json({ message: "Missing required parameters" });
         return
     }
+
+
+
     try {
      const result = await SiswaRepository.detailSiswa(id)
 
       res.status(200).json(result);
     }catch(e){
         res.status(500).json({ message: "Failed to get detail siswa" });
+    }
+  }
+
+
+  async updateSiswa(req : Request, res : Response) {
+    const id : string = req.params.id
+    const siswa : ISiswa = req.body
+
+
+    try {
+      if(!id || !siswa){
+        res.status(400).json({ message: "Missing required parameters" });
+
+        return
+      }
+
+      if(siswa.nis){
+        const existSiswa : ISiswa[] = await SiswaRepository.getAllSiswa()
+        existSiswa.map(siswa => {
+          if(siswa.nis === req.body.nis) {
+            res.status(400).json({ message: "NIS already exist" });
+          }
+        })
+
+        return
+      }
+
+
+      const result = await SiswaRepository.updateSiswa(id, siswa)
+
+      res.status(200).json(result);
+    }catch(e){
+        res.status(500).json({ message: "Failed to update siswa" });
     }
   }
 }
