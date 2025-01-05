@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import SiswaRepository from "../repo/siswa.repository";
 import { prismaClient } from "../app/database";
 import { ISiswa } from "../model/siswa.model";
+import ResponseError from "../error/error";
 
 export default  class SiswaController {
 
@@ -26,8 +27,9 @@ export default  class SiswaController {
       const result = await SiswaRepository.create(siswa)
       res.status(201).json(result);
     }catch (error) {
-      res.status(500).json({ message: "Failed to create siswa" });
-  }
+      new ResponseError("Failed to create siswa", 500)
+    }
+
   }
 
 
@@ -36,7 +38,7 @@ export default  class SiswaController {
       const allSiswa = await SiswaRepository.getAllSiswa()
       res.status(200).json(allSiswa);
     } catch (error) {
-      res.status(500).json({ message: "Failed to get all siswa" });
+      new ResponseError("Failed to get all siswa", 500)
     }
   }
 
@@ -63,14 +65,14 @@ export default  class SiswaController {
           }
           return
       }
-        const result = await SiswaRepository.delete(id)
+        await SiswaRepository.delete(id)
         res.status(200).json({
             message : "Siswa deleted successfully",
 
         });
     
     }catch(e){
-        res.status(500).json({ message: "Failed to delete siswa" });
+        new ResponseError("Failed to delete siswa", 500)
     }
   }
 
@@ -88,7 +90,7 @@ export default  class SiswaController {
 
       res.status(200).json(result);
     }catch(e){
-        res.status(500).json({ message: "Failed to get detail siswa" });
+       new ResponseError("Failed to get detail siswa", 500)
     }
   }
 
@@ -121,7 +123,7 @@ export default  class SiswaController {
 
       res.status(200).json(result);
     }catch(e){
-        res.status(500).json({ message: "Failed to update siswa" });
+        new ResponseError("Failed to update siswa", 500)
     }
   }
 }
